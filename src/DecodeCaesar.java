@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class DecodeCaesar {
 
 	public static void main(String[] args) {
@@ -10,30 +12,30 @@ public class DecodeCaesar {
 		//Entering source text
 		System.out.println("Please enter caesar-cipher encoded text (press enter to exit)");
 		System.out.println("List of decryption possibilities will be printed.\n-----");
-		String source = TextIO.getln();
-		source = source.trim();
+
+		Scanner scanner = new Scanner(System.in);
+		String source = scanner.nextLine().trim().toUpperCase();
 
 		//Checking if the user wants to exit
 		if (source.equals("")) {
-			TextIO.put("Bye.");
+			System.out.println("Bye.");
 			System.exit(0);
 		}
-
-		source = source.toUpperCase();
 
 		char []sourceText = new char[source.length()];
 		int []unicode = new int[source.length()];
 		int []unicodeCopy = new int[source.length()];
-		String hex;
-		int dec, count;
 
 		//Moves source text into array
-		for (count = 0; count < source.length(); count++) {
+		for (int count = 0; count < source.length(); count++) {
 			sourceText[count] = source.charAt(count);
 		}
 
+		String hex;
+		int dec;
+
 		//Go through sourceText and translate each letter into unicode value.
-		for (count = 0; count < sourceText.length; count++) {
+		for (int count = 0; count < sourceText.length; count++) {
 			//Convert to hex and then to decimal representation of char
 			hex = Integer.toHexString(sourceText[count]);
 			dec = Integer.parseInt(hex, 16);
@@ -41,12 +43,12 @@ public class DecodeCaesar {
 			unicodeCopy[count] = dec;
 		}
 
-		for (int e = 1; e <= 25; e++) {
-			smartShift(e, unicode, unicodeCopy);
+		for (int shift = 1; shift <= 25; shift++) {
+			smartShift(shift, unicode, unicodeCopy);
 		}
 	}
 
-	private static void smartShift(int input, int[] unicode, int[] unicodeCopy) {
+	private static void smartShift(int shift, int[] unicode, int[] unicodeCopy) {
 
 		// Preserve values
 		for (int x = 0; x <= unicode.length - 1; x++) {
@@ -54,7 +56,7 @@ public class DecodeCaesar {
 
 			//Shift and recovery
 			if (unicode[x] >= 65 && unicode[x] <= 90) {
-				unicodeCopy[x] += input;
+				unicodeCopy[x] += shift;
 
 				if (unicodeCopy[x] > 90) {
 					unicodeCopy[x] -= 26;
@@ -117,7 +119,7 @@ public class DecodeCaesar {
 		}
 
 		if (eTotal / total >= 0.05 || aTotal / total >= 0.05 || iTotal / total >= 0.05 || oTotal / total >= 0.05 || uTotal / total >= 0.05) {
-			TextIO.putln();
+			System.out.println();
 			System.out.println("\t" + finalCrypto);
 			System.out.println("\t\tA Pct: " + aTotal / total);
 			System.out.println("\t\tE Pct: " + eTotal / total);
